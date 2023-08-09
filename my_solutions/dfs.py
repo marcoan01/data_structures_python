@@ -1,16 +1,24 @@
-"""
-Python Data Structures - A Game-Based Approach
-DFS maze solver.
-Robin Andrews - https://compucademy.net/
-The stack contains positions as (row, column) tuples. Predecessors are kept in a dictionary.
-"""
-
 from helpers import get_path, offsets, is_legal_pos, read_maze
 from stack import Stack
 
 
 def dfs(maze, start, goal):
-    pass
+    stack = Stack()
+    stack.push(start)
+    predecessors = {start: None}
+
+    while not stack.isEmpty():
+        current_cell = stack.pop()
+        if current_cell == goal:
+            return get_path(predecessors, start, goal)
+        
+        for direction in ["up", "right", "down", "left"]:
+            row_offset, col_offset = offsets[direction]
+            neighboor = (current_cell[0] + row_offset, current_cell[1], + col_offset)
+            if is_legal_pos(maze, neighboor) and neighboor not in predecessors:
+                stack.push(neighboor)
+                predecessors[neighboor] = current_cell
+    return None
 
 
 if __name__ == "__main__":
